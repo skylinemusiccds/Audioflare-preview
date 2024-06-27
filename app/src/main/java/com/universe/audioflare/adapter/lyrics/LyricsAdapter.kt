@@ -1,5 +1,5 @@
 package com.universe.audioflare.adapter.lyrics
-
+/*
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -217,9 +217,8 @@ class LyricsAdapter(private var originalLyrics: Lyrics?, var translated: Lyrics?
 
 
 
-
-
-/*import android.graphics.Color
+*/
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -370,4 +369,4 @@ class LyricsAdapter(private var originalLyrics: Lyrics?, var translated: Lyrics?
         const val TYPE_ACTIVE = 0
         const val TYPE_NORMAL = 1
     }
-}*/
+}
