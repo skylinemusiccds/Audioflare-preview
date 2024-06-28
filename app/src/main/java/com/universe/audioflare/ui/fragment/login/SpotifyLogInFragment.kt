@@ -46,7 +46,6 @@ class SpotifyLogInFragment : Fragment() {
 
     private lateinit var dataStoreManager: DataStoreManager
 
-    // Step 1: Define the spdcToken property
     private var spdcToken: String? = null
 
     override fun onCreateView(
@@ -60,27 +59,23 @@ class SpotifyLogInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize DataStoreManager
         dataStoreManager = DataStoreManager(requireContext())
 
-        // Retrieve SPDC token from DataStore
         lifecycleScope.launch {
             spdcToken = dataStoreManager.spdcToken.first()
-            // If SPDC token is already stored, use it
             if (!spdcToken.isNullOrEmpty()) {
                 handleSpdcToken(spdcToken!!)
             } else {
-                // Set up the WebView for Spotify login
-                setupWebView()
+                // For testing, use the provided static token
+                val staticSpdcToken = "AQAuGFPAGxCeOHGuDKDgNfbRZuYMcZFyulOv_jUxeCo_Jg9sk-HU3pShaUPHlioQykt0b0ryncjUvO8x71K5e0w40pvXWvgFZvtuAprXf-ceVxAcxC2d8dEXVmTKnNnbjYfs5Anr6z1-MJT5WBeSRofzZ7X6asMM_nmsXps5N9u8tjJqEss46hPIyQA6RVt1ubjRdKQ6YBkci7BQMHuc9SuNCBDb"
+                handleSpdcToken(staticSpdcToken)
             }
         }
     }
 
     private fun handleSpdcToken(spdcToken: String) {
-        // Save SPDC token locally (DataStore)
         saveSpdcTokenLocally(spdcToken)
 
-        // Perform necessary operations with the token
         viewModel.saveSpotifySpdc(spdcToken)
         settingsViewModel.setSpotifyLogIn(true)
         Toast.makeText(
@@ -92,7 +87,6 @@ class SpotifyLogInFragment : Fragment() {
     }
 
     private fun saveSpdcTokenLocally(spdcToken: String) {
-        // Save SPDC token to DataStore
         lifecycleScope.launch {
             dataStoreManager.saveSpdcToken(spdcToken)
         }
@@ -113,7 +107,6 @@ class SpotifyLogInFragment : Fragment() {
                         }
                         WebStorage.getInstance().deleteAllData()
 
-                        // Clear all the cookies
                         CookieManager.getInstance().removeAllCookies(null)
                         CookieManager.getInstance().flush()
 
@@ -165,6 +158,7 @@ class SpotifyLogInFragment : Fragment() {
         }
     }
 }
+
 
 
 /*
