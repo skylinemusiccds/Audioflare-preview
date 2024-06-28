@@ -695,21 +695,23 @@ class SettingsViewModel @Inject constructor(
             }
         }*/
 
-    fun getSpotifyLogIn() {
+    /*fun getSpotifyLogIn() {
         viewModelScope.launch {
-            dataStoreManager.SPDC_TOKEN_KEY.collect { loggedIn ->
+            dataStoreManager.spdcToken.collect { loggedIn ->
                 _spotifyLogIn.emit(loggedIn.isNotEmpty())
             }
         }
-    }
+        }*/
 
 
     fun setSpotifyLogIn(loggedIn: Boolean) {
         viewModelScope.launch {
-            _spotifyLogIn.emit(loggedIn)
+            _spotifyLogIn.value = loggedIn // Update the Spotify login state
             if (!loggedIn) {
-                dataStoreManager.setSpdc("")
-                delay(500)
+                dataStoreManager.setSpdc("") // Example of setting SPDC to empty string
+                delay(500) // Introduce a delay for token clearing
+            } else {
+                dataStoreManager.setSpdc("XXX") // Example of setting SPDC to "XXX"
             }
             getSpotifyLogIn()
         }
