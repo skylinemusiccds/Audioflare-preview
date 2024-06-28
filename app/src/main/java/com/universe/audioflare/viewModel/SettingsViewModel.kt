@@ -686,7 +686,7 @@ class SettingsViewModel @Inject constructor(
 
     fun getSpotifyLogIn() {
         viewModelScope.launch {
-            dataStoreManager.spdc.collect { loggedIn ->
+            dataStoreManager.spdcToken.collect { loggedIn ->
                 if (loggedIn.isNotEmpty()) {
                     _spotifyLogIn.emit(true)
                 } else {
