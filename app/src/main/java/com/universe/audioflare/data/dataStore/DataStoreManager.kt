@@ -1,5 +1,26 @@
 package com.universe.audioflare.data.dataStore
 
+import android.content.Context
+import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.preferencesKey
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import com.universe.audioflare.common.*
+import com.universe.audioflare.common.Constants.Companion.FALSE
+import com.universe.audioflare.common.Constants.Companion.REPEAT_ALL
+import com.universe.audioflare.common.Constants.Companion.REPEAT_MODE_OFF
+import com.universe.audioflare.common.Constants.Companion.REPEAT_ONE
+import com.universe.audioflare.common.Constants.Companion.TRUE
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+
 class DataStoreManager
     @Inject
     constructor(private val settingsDataStore: DataStore<Preferences>) {
