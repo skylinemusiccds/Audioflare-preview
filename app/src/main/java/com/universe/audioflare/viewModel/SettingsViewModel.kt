@@ -706,7 +706,7 @@ class SettingsViewModel @Inject constructor(
     fun getSpotifyLogIn() {
         viewModelScope.launch {
         // Example of retrieving SPDC token from data store
-            val spdcToken = dataStoreManager.getSpdcToken()
+            val spdcToken = dataStoreManager.saveSpdcToken()
 
         // Emit login status based on token presence
         _spotifyLogIn.emit(spdcToken.isNotEmpty())
@@ -720,7 +720,7 @@ class SettingsViewModel @Inject constructor(
                 dataStoreManager.setSpdc("") // Example of setting SPDC to empty string
                 delay(500) // Introduce a delay for token clearing
             } else {
-                dataStoreManager.setSpdc("XXX") // Example of setting SPDC to "XXX"
+                dataStoreManager.setSpdc("AQAuGFPAGxCeOHGuDKDgNfbRZuYMcZFyulOv_jUxeCo_Jg9sk-HU3pShaUPHlioQykt0b0ryncjUvO8x71K5e0w40pvXWvgFZvtuAprXf-ceVxAcxC2d8dEXVmTKnNnbjYfs5Anr6z1-MJT5WBeSRofzZ7X6asMM_nmsXps5N9u8tjJqEss46hPIyQA6RVt1ubjRdKQ6YBkci7BQMHuc9SuNCBDb") // Example of setting SPDC to "XXX"
             }
             getSpotifyLogIn()
         }
