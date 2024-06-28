@@ -703,6 +703,15 @@ class SettingsViewModel @Inject constructor(
         }
         }*/
 
+    fun getSpotifyLogIn() {
+        viewModelScope.launch {
+        // Example of retrieving SPDC token from data store
+            val spdcToken = dataStoreManager.getSpdcToken()
+
+        // Emit login status based on token presence
+        _spotifyLogIn.emit(spdcToken.isNotEmpty())
+        }
+    }
 
     fun setSpotifyLogIn(loggedIn: Boolean) {
         viewModelScope.launch {
