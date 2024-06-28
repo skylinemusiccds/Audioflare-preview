@@ -435,13 +435,30 @@ class DataStoreManager
                 preferences[SPDC] ?: ""
             }
 
-        suspend fun setSpdc(spdc: String) {
-            withContext(Dispatchers.IO) {
-                settingsDataStore.edit { settings ->
-                    settings[SPDC] = spdc
-                }
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+        private val SPDC_TOKEN_KEY = stringPreferencesKey("spdc_token")
+
+        private val dataStore = context.dataStore
+
+        suspend fun saveSpdcToken(token: String) {
+            dataStore.edit { preferences ->
+                preferences[SPDC_TOKEN_KEY] = token
             }
         }
+
+        val spdcToken: Flow<String?>
+            get() = dataStore.data.map { preferences ->
+                preferences[SPDC_TOKEN_KEY]
+            }
+
+            suspend fun setSpdc(spdc: String) {
+                withContext(Dispatchers.IO) {
+                    settingsDataStore.edit { settings ->
+                        settings[SPDC] = spdc
+                    }
+                }
+            }
 
         val spotifyLyrics: Flow<String> =
             settingsDataStore.data.map { preferences ->
