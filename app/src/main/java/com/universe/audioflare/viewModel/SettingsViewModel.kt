@@ -709,7 +709,7 @@ class SettingsViewModel @Inject constructor(
             val spdcToken = dataStoreManager.saveSpdcToken()
 
         // Emit login status based on token presence
-        _spotifyLogIn.emit(spdcToken.isNotEmpty())
+        _spotifyLogIn.emit(true)
         }
     }
 
