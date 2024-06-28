@@ -291,5 +291,6 @@ class SpotifyLogInFragment : Fragment() {
                 miniplayer.visibility = View.VISIBLE
             }
         }
-    }*/
+    }
 }
+*/
