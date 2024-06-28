@@ -684,7 +684,7 @@ class SettingsViewModel @Inject constructor(
     private var _spotifyLogIn: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val spotifyLogIn: StateFlow<Boolean> = _spotifyLogIn
 
-    fun getSpotifyLogIn() {
+    /*fun getSpotifyLogIn() {
         viewModelScope.launch {
             dataStoreManager.spdcToken.collect { loggedIn ->
                 if (loggedIn.isNotEmpty()) {
@@ -693,7 +693,7 @@ class SettingsViewModel @Inject constructor(
                     _spotifyLogIn.emit(false)
                 }
             }
-        }
+        }*/
 
     }
 
