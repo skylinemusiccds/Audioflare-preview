@@ -435,6 +435,9 @@ class DataStoreManager
            //     preferences[SPDC] ?: ""
             //}
 
+        val spdc =
+            settingsDataStore.data.map { preferences ->
+                preferences[SPDC_TOKEN_KEY] ?: ""
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
         private val SPDC_TOKEN_KEY = stringPreferencesKey("spdc_token")
