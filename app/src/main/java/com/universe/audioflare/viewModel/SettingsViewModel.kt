@@ -705,14 +705,16 @@ class SettingsViewModel @Inject constructor(
 
     fun getSpotifyLogIn() {
         viewModelScope.launch {
-        // Example of retrieving SPDC token from data store
-            val spdcToken = dataStoreManager.saveSpdcToken()
+            // Example of retrieving SPDC token from data store
+            val spdcToken = dataStoreManager.spdcToken.firstOrNull() ?: ""
 
-        // Emit login status based on token presence
-        _spotifyLogIn.emit(true)
+            // Save the SPDC token obtained
+            dataStoreManager.saveSpdcToken(spdcToken)
+
+            // Emit login status based on token presence
+            _spotifyLogIn.emit(true)
         }
     }
-
     fun setSpotifyLogIn(loggedIn: Boolean) {
         viewModelScope.launch {
             _spotifyLogIn.value = loggedIn // Update the Spotify login state
