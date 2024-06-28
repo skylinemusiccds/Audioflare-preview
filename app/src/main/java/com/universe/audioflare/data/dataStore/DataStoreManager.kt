@@ -610,4 +610,4 @@ class DataStoreManager
             const val TRUE = "TRUE"
             const val FALSE = "FALSE"
         }
-    }
+            }
