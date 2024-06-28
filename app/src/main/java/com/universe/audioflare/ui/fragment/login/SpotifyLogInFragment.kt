@@ -45,6 +45,9 @@ class SpotifyLogInFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
+    // Step 1: Define the spdcToken property
+    private var spdcToken: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -60,11 +63,11 @@ class SpotifyLogInFragment : Fragment() {
         sharedPreferences = requireContext().getSharedPreferences("spotify_prefs", Context.MODE_PRIVATE)
 
         // Retrieve SPDC token from SharedPreferences
-        val spdcToken = sharedPreferences.getString("spdc_token", null)
+        spdcToken = sharedPreferences.getString("spdc_token", null)
 
         // If SPDC token is already stored, use it
         if (!spdcToken.isNullOrEmpty()) {
-            handleSpdcToken(spdcToken)
+            handleSpdcToken(spdcToken!!)
         } else {
             // Normally, you would initiate the Spotify login process here
             // For demonstration, let's assume we have a static token for testing
@@ -149,6 +152,7 @@ class SpotifyLogInFragment : Fragment() {
         }
     }
 }
+
 
 /*
 import android.annotation.SuppressLint
