@@ -1,32 +1,30 @@
 package com.universe.audioflare.data.dataStore
 
-import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.preferencesKey
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import com.universe.audioflare.common.*
-import com.universe.audioflare.common.Constants.Companion.FALSE
-import com.universe.audioflare.common.Constants.Companion.REPEAT_ALL
-import com.universe.audioflare.common.Constants.Companion.REPEAT_MODE_OFF
-import com.universe.audioflare.common.Constants.Companion.REPEAT_ONE
-import com.universe.audioflare.common.Constants.Companion.TRUE
-import dagger.hilt.android.qualifiers.ApplicationContext
+import androidx.media3.common.Player
+import com.universe.audioflare.common.SELECTED_LANGUAGE
+import com.universe.audioflare.common.SPONSOR_BLOCK
+import com.universe.audioflare.common.SUPPORTED_LANGUAGE
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
+import com.universe.audioflare.common.QUALITY as COMMON_QUALITY
 
 class DataStoreManager
     @Inject
     constructor(private val settingsDataStore: DataStore<Preferences>) {
         val location: Flow<String> =
             settingsDataStore.data.map { preferences ->
-                preferences[LOCATION] ?: "VN"
+                preferences[LOCATION] ?: "IN"
             }
 
         suspend fun setLocation(location: String) {
@@ -250,7 +248,7 @@ class DataStoreManager
 
         val sendBackToGoogle =
             settingsDataStore.data.map { preferences ->
-                preferences[SEND_BACK_TO_GOOGLE] ?: FALSE
+                preferences[SEND_BACK_TO_GOOGLE] ?: TRUE
             }
 
         suspend fun setSendBackToGoogle(send: Boolean) {
@@ -402,7 +400,7 @@ class DataStoreManager
 
         val watchVideoInsteadOfPlayingAudio =
             settingsDataStore.data.map { preferences ->
-                preferences[WATCH_VIDEO_INSTEAD_OF_PLAYING_AUDIO] ?: FALSE
+                preferences[WATCH_VIDEO_INSTEAD_OF_PLAYING_AUDIO] ?: TRUE
             }
 
         suspend fun setWatchVideoInsteadOfPlayingAudio(watch: Boolean) {
@@ -421,7 +419,7 @@ class DataStoreManager
 
         val videoQuality =
             settingsDataStore.data.map { preferences ->
-                preferences[VIDEO_QUALITY] ?: "720p"
+                preferences[VIDEO_QUALITY] ?: "360p"
             }
 
         suspend fun setVideoQuality(quality: String) {
@@ -431,7 +429,7 @@ class DataStoreManager
                 }
             }
         }
-
+        //private val s_p_d_c = "AQAuGFPAGxCeOHGuDKDgNfbRZuYMcZFyulOv_jUxeCo_Jg9sk-HU3pShaUPHlioQykt0b0ryncjUvO8x71K5e0w40pvXWvgFZvtuAprXf-ceVxAcxC2d8dEXVmTKnNnbjYfs5Anr6z1-MJT5WBeSRofzZ7X6asMM_nmsXps5N9u8tjJqEss46hPIyQA6RVt1ubjRdKQ6YBkci7BQMHuc9SuNCBDb"
         val spdc =
             settingsDataStore.data.map { preferences ->
                 preferences[SPDC] ?: ""
@@ -447,7 +445,7 @@ class DataStoreManager
 
         val spotifyLyrics: Flow<String> =
             settingsDataStore.data.map { preferences ->
-                preferences[SPOTIFY_LYRICS] ?: FALSE
+                preferences[SPOTIFY_LYRICS] ?: TRUE
             }
 
         suspend fun setSpotifyLyrics(spotifyLyrics: Boolean) {
@@ -466,7 +464,7 @@ class DataStoreManager
 
         val spotifyCanvas: Flow<String> =
             settingsDataStore.data.map { preferences ->
-                preferences[SPOTIFY_CANVAS] ?: FALSE
+                preferences[SPOTIFY_CANVAS] ?: TRUE
             }
 
         suspend fun setSpotifyCanvas(spotifyCanvas: Boolean) {
@@ -537,7 +535,7 @@ class DataStoreManager
 
         val chartKey =
             settingsDataStore.data.map { preferences ->
-                preferences[CHART_KEY] ?: "ZZ"
+                preferences[CHART_KEY] ?: "IN"
             }
 
         suspend fun setChartKey(key: String) {
