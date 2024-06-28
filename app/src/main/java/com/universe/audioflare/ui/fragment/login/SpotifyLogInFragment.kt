@@ -2,7 +2,6 @@ package com.universe.audioflare.ui.fragment.login
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,9 +28,10 @@ import com.universe.audioflare.service.SimpleMediaService
 import com.universe.audioflare.viewModel.LogInViewModel
 import com.universe.audioflare.viewModel.SettingsViewModel
 import com.universe.audioflare.viewModel.SharedViewModel
+import com.universe.audioflare.data.DataStoreManager
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
@@ -43,7 +44,7 @@ class SpotifyLogInFragment : Fragment() {
     private val settingsViewModel by activityViewModels<SettingsViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var dataStoreManager: DataStoreManager
 
     // Step 1: Define the spdcToken property
     private var spdcToken: String? = null
@@ -59,25 +60,24 @@ class SpotifyLogInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize SharedPreferences
-        sharedPreferences = requireContext().getSharedPreferences("spotify_prefs", Context.MODE_PRIVATE)
+        // Initialize DataStoreManager
+        dataStoreManager = DataStoreManager(requireContext())
 
-        // Retrieve SPDC token from SharedPreferences
-        spdcToken = sharedPreferences.getString("spdc_token", null)
-
-        // If SPDC token is already stored, use it
-        if (!spdcToken.isNullOrEmpty()) {
-            handleSpdcToken(spdcToken!!)
-        } else {
-            // Normally, you would initiate the Spotify login process here
-            // For demonstration, let's assume we have a static token for testing
-            val staticSpdcToken = "AQAuGFPAGxCeOHGuDKDgNfbRZuYMcZFyulOv_jUxeCo_Jg9sk-HU3pShaUPHlioQykt0b0ryncjUvO8x71K5e0w40pvXWvgFZvtuAprXf-ceVxAcxC2d8dEXVmTKnNnbjYfs5Anr6z1-MJT5WBeSRofzZ7X6asMM_nmsXps5N9u8tjJqEss46hPIyQA6RVt1ubjRdKQ6YBkci7BQMHuc9SuNCBDb"
-            handleSpdcToken(staticSpdcToken)
+        // Retrieve SPDC token from DataStore
+        lifecycleScope.launch {
+            spdcToken = dataStoreManager.spdcToken.first()
+            // If SPDC token is already stored, use it
+            if (!spdcToken.isNullOrEmpty()) {
+                handleSpdcToken(spdcToken!!)
+            } else {
+                // Set up the WebView for Spotify login
+                setupWebView()
+            }
         }
     }
 
     private fun handleSpdcToken(spdcToken: String) {
-        // Save SPDC token locally (SharedPreferences or secure storage)
+        // Save SPDC token locally (DataStore)
         saveSpdcTokenLocally(spdcToken)
 
         // Perform necessary operations with the token
@@ -92,8 +92,10 @@ class SpotifyLogInFragment : Fragment() {
     }
 
     private fun saveSpdcTokenLocally(spdcToken: String) {
-        // Save SPDC token to SharedPreferences
-        sharedPreferences.edit().putString("spdc_token", spdcToken).apply()
+        // Save SPDC token to DataStore
+        lifecycleScope.launch {
+            dataStoreManager.saveSpdcToken(spdcToken)
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -103,8 +105,11 @@ class SpotifyLogInFragment : Fragment() {
                 @SuppressLint("FragmentLiveDataObserve")
                 override fun onPageFinished(view: WebView?, url: String?) {
                     if (url == Config.SPOTIFY_ACCOUNT_URL) {
-                        CookieManager.getInstance().getCookie(url)?.let {
-                            viewModel.saveSpotifySpdc(it)
+                        CookieManager.getInstance().getCookie(url)?.let { cookies ->
+                            val spdcToken = extractSpdcTokenFromCookies(cookies)
+                            if (!spdcToken.isNullOrEmpty()) {
+                                handleSpdcToken(spdcToken)
+                            }
                         }
                         WebStorage.getInstance().deleteAllData()
 
@@ -133,6 +138,14 @@ class SpotifyLogInFragment : Fragment() {
             settings.javaScriptEnabled = true
             loadUrl(Config.SPOTIFY_LOG_IN_URL)
         }
+    }
+
+    private fun extractSpdcTokenFromCookies(cookies: String): String? {
+        val cookieMap = cookies.split(";").associate {
+            val (name, value) = it.split("=")
+            name.trim() to value.trim()
+        }
+        return cookieMap["sp_dc"]
     }
 
     @UnstableApi
