@@ -695,7 +695,14 @@ class SettingsViewModel @Inject constructor(
             }
         }*/
 
+    fun getSpotifyLogIn() {
+        viewModelScope.launch {
+            dataStoreManager.spdcToken.collect { loggedIn ->
+                _spotifyLogIn.emit(loggedIn.isNotEmpty())
+            }
+        }
     }
+
 
     fun setSpotifyLogIn(loggedIn: Boolean) {
         viewModelScope.launch {
