@@ -298,7 +298,7 @@ class LyricsAdapter(private var originalLyrics: Lyrics?, var translated: Lyrics?
             }
 
             // Increase font size for active line (adjust the value as needed)
-            binding.tvNowLyrics.textSize = binding.tvNowLyrics.textSize + 1
+            binding.tvNowLyrics.textSize *= 0.9f // Adjust the multiplier to control font size
         }
     }
 
