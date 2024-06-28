@@ -269,7 +269,8 @@ class Ytmusic {
                     append("Cookie", cookie)
                     if ("SAPISID" !in cookieMap) return@let
                     val currentTime = System.currentTimeMillis() / 1000
-                    val keyValue = cookieMap["SAPISID"] ?: cookieMap["__Secure-3PAPISID"]
+                    //val keyValue = cookieMap["SAPISID"] ?: cookieMap["__Secure-3PAPISID"]
+                    val keyValue = "kY_Ubch2r7zI9VYO/An9LKU8gQ-ywHLJOH" ?: "kY_Ubch2r7zI9VYO/An9LKU8gQ-ywHLJOH"
                     println("keyValue: $keyValue")
                     val sapisidHash =
                         if (client != YouTubeClient.NOTIFICATION_CLIENT) {
