@@ -15,9 +15,7 @@ import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.util.UnstableApi
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.universe.audioflare.R
@@ -50,7 +48,7 @@ class SpotifyLogInFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSpotifyLogInBinding.inflate(inflater, container, false)
         return binding.root
@@ -71,6 +69,8 @@ class SpotifyLogInFragment : Fragment() {
                 handleSpdcToken(staticSpdcToken)
             }
         }
+
+        setupWebView()
     }
 
     private fun handleSpdcToken(spdcToken: String) {
@@ -114,7 +114,7 @@ class SpotifyLogInFragment : Fragment() {
                         binding.webView.clearFormData()
                         binding.webView.clearHistory()
                         binding.webView.clearSslPreferences()
-                        viewModel.spotifyStatus.observe(this@SpotifyLogInFragment) {
+                        viewModel.spotifyStatus.observe(viewLifecycleOwner) {
                             if (it) {
                                 settingsViewModel.setSpotifyLogIn(true)
                                 Toast.makeText(
@@ -158,7 +158,6 @@ class SpotifyLogInFragment : Fragment() {
         }
     }
 }
-
 
 
 /*
