@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -25,14 +26,10 @@
         <intent>
             <action android:name="android.media.action.DISPLAY_AUDIO_EFFECT_CONTROL_PANEL" />
         </intent>
-    </queries>
-    <queries>
-        <package android:name="com.universe.audioflare" />
-    </queries>
-    <queries>
         <intent>
             <action android:name="androidx.media3.session.MediaSessionService" />
         </intent>
+        <package android:name="com.universe.audioflare" />
     </queries>
 
     <application
@@ -51,7 +48,7 @@
         <!-- Define SplashActivity as the launcher activity -->
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/Theme.AudioFlare.Splash" <!-- Optionally set a theme if needed -->
+            android:theme="@style/Theme.AudioFlare.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
