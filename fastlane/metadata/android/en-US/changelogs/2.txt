@@ -1,0 +1,17 @@
+Fixes:
+
+- Fixed UniVerse-DevOps/AudioFlare#4
+- Fixed bugs
+- Migrate Gradle to Kotlin KTS
+
+New Feature:
+
+- Remove Thumbnail Cache
+- Move or remove Queue Track
+- Backup and restore data (UniVerse-DevOps/AudioFlare#2)
+- Add swipe to remove miniplayer
+- Add AudioFlare to YouTube, YouTube Music's share menu (UniVerse-DevOps/AudioFlare#9)
+- Open YouTube link by default
+- Add static shortcuts
+- Auto save lyrics for offline playback
+- Change Quality
