@@ -1,4 +1,5 @@
-name: Build debug APK
+name: Build debug APK NEW
+
 on:
   workflow_dispatch:
   push:
@@ -16,20 +17,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: "temurin"
           cache: 'gradle'
 
       - name: Build debug APK
-        run: ./gradlew assembleDebug
+        run: |
+          chmod +x ./gradlew  # Ensure gradlew has executable permission
+          ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        if: success()  # Upload artifact only if the build was successful
+        uses: actions/upload-artifact@v3
         with:
-          name: app
+          name: app-debug
           path: app/build/outputs/apk/debug/
